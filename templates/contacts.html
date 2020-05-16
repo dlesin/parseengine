@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block head_title %}Контакты{% endblock head_title %}
+{% block head_description %}Описание контактов{% endblock head_description %}
+{% block content %}
+    <div class="container">
+      <div class="row">
+        <div class="offset-sm-2 col-sm-8">
+            <h1>Контакты:</h1>
+            <p>Email - <a href="mailto:T0n0P@bk.ru">T0n0P@bk.ru</a></p>
+            <p>Свяжитесь со мной через форму обратной связи ниже...</p>
+            <form action="{% url 'contacts_view_url' %}" method="post">
+            {% csrf_token %}
+              <div class="form">
+                {{ form.user|as_crispy_field }}
+                {{ form.content|as_crispy_field }}
+              </div>
+              <button class="btn btnblack">Отправить</button>
+          </form>
+          </div>
+        </div>
+      </div>
+{% endblock content %}

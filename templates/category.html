@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block content %}
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-10">
+				{% for post in posts_list %}
+				<div class="row mb-5">
+					<div class="col-lg-4">
+						<div class="post__foto">
+							<a href="{{ post.get_absolute_url }}">
+								<img src="{{ post.thumbnail.url }}" class="img-fluid img-thumbnail" alt="{{ post.thumbnail_alt }}">
+							</a>
+						</div>
+					</div>
+					<div class="col-lg-8 p-0">
+						<div class="post">
+							<a href="{{ post.get_absolute_url }}">
+								<h4 class="post__title">{{ post.title }}</h4>
+							</a>
+							<p class="post__text">{{ post.overview|truncatewords:33 }}</p>
+						    <ul class="post__fa">
+						      <li><i class="fa fa-comments" aria-hidden="true"> {{ post.comment_count }}</i></li>
+						      <li><i class="fa fa-eye" aria-hidden="true"> {{ post.view_count }}</i></li>
+						    </ul>
+						    <ul class="post__tags">
+						    	{% for tag in post.categories.all %}
+						      		<a href="{{ tag.get_absolute_url }}"><li>{{ tag }}</li></a>
+						    	{% endfor %}
+						    </ul>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+			<div class="col-lg-2 p-0">
+				<div class="category ml-5 mb-5">
+					<h3 class="category__title">Категории:</h3>
+					<ul class="category__list">
+					{% for category in categories_list %}
+						<li><a href="{{ category.get_absolute_url }}">{{ category.title }}</a></li>
+					{% endfor %}
+					</ul>
+				</div>
+				<div class="tops ml-5">
+					<h3 class="tops__title">Топ 10:</h3>
+					<ul class="tops__list">
+					{% for post in tops_list %}
+						<li>
+							<a href="{{ post.get_absolute_url }}">
+								<img src="{{ post.thumbnail.url }}" class="img-fluid img-thumbnail" alt="{{ post.thumbnail_alt }}">
+								<h5 class="mt-1 text-center">{{ post.title|truncatewords:6 }}</h5>
+							</a>
+						</li>
+					{% endfor %}
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	   {% if is_paginated %}
+	        <div class="pagination">
+	            <span class="page-links">
+	                {% if page_obj.has_previous %}
+	                    <a href="?page={{ page_obj.previous_page_number }}">&laquo;</a>
+	                {% endif %}
+		                {% for page in page_obj.paginator.page_range %}
+		                	{% ifequal page page_obj.number %}
+				                <span class="page-current">
+				                    {{ page_obj.number }}
+				                </span>
+			                {% else %}
+			                	<a href="?page={{ page }}">{{ page }}</a>
+			                {% endifequal %}
+		                {% endfor %}
+	                {% if page_obj.has_next %}
+	                    <a href="?page={{ page_obj.next_page_number }}">&raquo;</a>
+	                {% endif %}
+	            </span>
+	        </div>
+	    {% endif %}
+{% endblock content %}

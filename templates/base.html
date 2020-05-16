@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="{% block head_description %}MAIN DESC{% endblock head_description %}">
+    <meta name="author" content="YA">
+    <title>{% block head_title %}SITE{% endblock head_title %}</title>
+    <link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}">
+    {#    <link rel="stylesheet" href="{% static "css/normalize.css" %}">#}
+    <link rel="stylesheet" href="{% static "fonts/font-awesome/css/font-awesome.min.css" %}">
+    <link rel="stylesheet" href="{% static "css/style.css" %}">
+    <link rel="shortcut icon" href="{% static "img/favicon.ico" %}">
+    {% block extra_head %}{% endblock extra_head %}
+</head>
+
+<body>
+{% include "navbar.html" %}
+<div>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+{% block content %}{% endblock content %}
+{% block extra_body %}{% endblock extra_body %}
+{% include "footer.html" %}
+{% include "scripts.html" %}
+</body>
+</html>

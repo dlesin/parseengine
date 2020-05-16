@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{#{% load crispy_forms_tags %}#}
+{% block head_title %}Главная{% endblock head_title %}
+{% block head_description %}Описание Главной{% endblock head_description %}
+{% block content %}
+    <section class="main">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="mb-5 text-center">Парсер 1.0</h1>
+                    <strong>Вставь ссылку с youtube:</strong>
+                    <form class="form-inline" action="{% url 'home_view_url' %}" method="post">{% csrf_token %}
+                        {% for field in form %}
+                            <div class="form-group long-form">
+                                {{ field.errors }}
+                                {{ field }}
+                            </div>
+                        {% endfor %}
+                        <button class="btnblack m-0">Поехали</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% if title and title_url %}
+            <div class="container mt-5">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <img src="{{ title_url }}" class="img-fluid img-thumbnail" alt="youtube thumbnail">
+                            </div>
+                            <div class="col-lg-3">
+                                <form>
+                                    <div class="form-group">
+                                        <select id="video-quality" class="form-control">
+                                            <option value="" disabled selected>Сделай выбор</option>
+                                            {% for video in videoset %}
+                                                {% if video.quality is not None %}
+                                                    {% if video.fps %}
+                                                        <option value="{{ video.url }}">
+                                                            {{ video.quality }}{{ video.fps }}fps
+                                                            - {{ video.mimetype }}</option>
+                                                    {% endif %}
+                                                {% else %}
+                                                    <option value="{{ video.url }}">{{ video.bitrate }}k
+                                                        - {{ video.mimetype }}</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <button id="get-video" class="btnblack m-0">Качать</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="video-descriptions mt-3">
+                            <p>{{ title }}</p>
+                            <p>{{ descriptions }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </section>
+{% endblock content %}
